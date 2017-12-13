@@ -158,7 +158,54 @@ def container_list(request):
             'idle_containers_list': idle_containers_list
         }
     )
+@login_required
+def container_active(request):
+    if request.user.is_superuser:
+        containers = Container.objects.all()
+    else:
+        containers = Container.objects.filter(user=request.user)
+    active_containers_list = []
+    idle_containers_list = []
+    for container in containers:
+        details_d = container.details()
+        container.__dict__.update(details_d)
+        if details_d['running']:
+            active_containers_list.append(container)
+        else:
+            idle_containers_list.append(container)
 
+    return render(
+        request,
+        "container_active.html",
+        {
+            'active_containers_list': active_containers_list
+
+        }
+    )
+@login_required
+def container_passive(request):
+    if request.user.is_superuser:
+        containers = Container.objects.all()
+    else:
+        containers = Container.objects.filter(user=request.user)
+    active_containers_list = []
+    idle_containers_list = []
+    for container in containers:
+        details_d = container.details()
+        container.__dict__.update(details_d)
+        if details_d['running']:
+            active_containers_list.append(container)
+        else:
+            idle_containers_list.append(container)
+
+    return render(
+        request,
+        "container_passive.html",
+        {
+            'idle_containers_list': idle_containers_list
+
+        }
+    )
 
 @login_required
 def container_details(request, container_id):
@@ -218,7 +265,7 @@ def delete_user(request, pk):
 @admin_required
 def ip_list(request):
     ip_list = IP.objects.filter(is_available=True)
-    
+
     return render(request, "ip_address.html", {"ip_list": ip_list})
 
 

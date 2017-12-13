@@ -1,85 +1,104 @@
 {% extends "site_base.html" %}
 {% load staticfiles %}
-{% block title %} Dockerbox Dashboard {% endblock %}
+{% block title %} Panel {% endblock %}
+{% block contenttitle %} Panel {% endblock %}
 {% block bodycontent %}
 <!-- main_container starts here -->
-<div class="row marl main_container">
-    <div class="container">
+<div class="fluid">
+
         <ul class="ul_host">
-            <li class='li_host'>HostName: {{ host_name }}</li>
+            <li class='li_host'>Ana Makine: {{ host_name }}</li>
             <li class='li_host'>Kernel: {{ kernel }}</li>
-            <li class='li_host'>IP Address: {{ ip_addr }}</li>
+            <li class='li_host'>IP Adresi: {{ ip_addr }}</li>
         </ul>
-        <div class="row chart_row">
-            <div class="col-md-6 chart_col">
-                <div class="panel panel-default">
-                    <div class="panel-heading">CPU
-                        <br/>
-                        <div id="chart_div" style="width: 100%; height: 100%;"></div>
-                    </div>
-                    <div class="panel-content">
-                        <div id="curve_chart1" style="width:90%"></div>
-                    </div>
+</div>
+<div class="fluid">
+        <div class="widget grid12">
+            <div class="widget-header">
+                <div class="widget-title">
+                    <i class="fa fa-microchip"></i> CPU Kullanımı
                 </div>
-            </div>
-
-            <div class="col-md-6 chart_col">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Ram Usage (GB)
-                        <br/>
-                        <div id="mem_div" style="width: 100%; height: 100%;"></div>
-                    </div>
-                    <div class="panel-content">
-                        <div id="curve_chart2" style="width:90%"></div>
-                    </div>
+                <div class="widget-controls">
+                    <div class="badge msg-badge">%</div>
                 </div>
+            </div> <!-- /widget-header -->
 
-
+            <div class="widget-content pad20f">
+                <div id="chart_div" style="width: 100%; height: 100%;"></div>
             </div>
 
-            <div class="col-md-6 chart_col">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Network Usage - Download
-                        <br/>
-                        <div id="nud" style="width: 100%; height: 100%;"></div>
-                    </div>
-                    <div class="panel-content">
-                        <div id="curve_chart"></div>
-                    </div>
-                </div>
+					</div> <!-- /widget -->
+</div>
+
+<div class="fluid">
+  <div class="widget grid6">
+      <div class="widget-header">
+          <div class="widget-title">
+              <i class="fa fa-microchip"></i> Ram Kullanımı (GB)
+          </div>
+          <div class="widget-controls">
+              <div class="badge msg-badge">%</div>
+          </div>
+      </div> <!-- /widget-header -->
+
+      <div class="widget-content pad20f">
+          <div id="mem_div" style="width: 100%; height: 100%;"></div>
+      </div>
+
+    </div> <!-- /widget -->
+    <div class="widget grid6">
+        <div class="widget-header">
+            <div class="widget-title">
+                <i class="fa fa-microchip"></i> Disk Kullanımı (GB)
             </div>
-
-            <div class="col-md-6 chart_col">
-                <div class="panel panel-default">
-
-                    <div class="panel-heading">Network Usage - Upload
-                        <br/>
-                        <div id="nuu" style="width: 100%; height: 100%;"></div>
-                    </div>
-                    <div class="panel-content">
-                        <div id="curve_chart"></div>
-                    </div>
-                </div>
+            <div class="widget-controls">
+                <div class="badge msg-badge">%</div>
             </div>
+        </div> <!-- /widget-header -->
 
-            <div class="col-md-6 chart_col">
-                <div class="panel panel-default">
-
-                    <div class="panel-heading">Disk Usage (GB)
-                        <br/>
-                        <div id="disk_div" style="width: 100%; height: 100%;"></div>
-                    </div>
-                    <div class="panel-content">
-                        <div id="piechart"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 chart_col">
-
-            </div>
+        <div class="widget-content pad20f">
+            <div id="disk_div" style="width: 100%; height: 100%;"></div>
         </div>
-    </div>
+
+      </div> <!-- /widget -->
+
+</div>
+
+<div class="fluid">
+  <div class="widget grid6">
+      <div class="widget-header">
+          <div class="widget-title">
+              <i class="fa fa-microchip"></i> Şebeke Kullanımı - İndirme
+          </div>
+          <div class="widget-controls">
+              <div class="badge msg-badge">KB</div>
+          </div>
+      </div> <!-- /widget-header -->
+
+      <div class="widget-content pad20f">
+          <div id="nud" style="width: 100%; height: 100%;"></div>
+      </div>
+
+    </div> <!-- /widget -->
+    <div class="widget grid6">
+        <div class="widget-header">
+            <div class="widget-title">
+                <i class="fa fa-microchip"></i> Şebeke Kullanımı - Yükleme
+            </div>
+            <div class="widget-controls">
+                <div class="badge msg-badge">KB</div>
+            </div>
+        </div> <!-- /widget-header -->
+
+        <div class="widget-content pad20f">
+            <div id="nuu" style="width: 100%; height: 100%;"></div>
+        </div>
+
+      </div> <!-- /widget -->
+</div>
+
+
+
     <!-- main_container ends here -->
     {% endblock %}
     {% block extra_js %}
@@ -97,14 +116,14 @@
             data.addColumn('number', 'CPU(%)');
             var options = {
                 hAxis: {
-                    title: 'Time',
-                    titleTextStyle:{
+                    title: 'Zaman',
+                    titleTextStyle: {
                         italic: false
                     }
                 },
                 vAxis: {
                     title: 'CPU(%)',
-                    titleTextStyle:{
+                    titleTextStyle: {
                         italic: false
                     }
                 },
@@ -118,14 +137,14 @@
             var netData = new google.visualization.DataTable();
             var net_options = {
                 hAxis: {
-                    title: 'Time',
-                    titleTextStyle:{
+                    title: 'Zaman',
+                    titleTextStyle: {
                         italic: false
                     }
                 },
                 vAxis: {
-                    title: 'Downloaded(KB)',
-                    titleTextStyle:{
+                    title: 'İndirilen(KB)',
+                    titleTextStyle: {
                         italic: false
                     }
                 },
@@ -137,14 +156,14 @@
             var netData2 = new google.visualization.DataTable();
             var net_options2 = {
                 hAxis: {
-                    title: 'Time',
-                    titleTextStyle:{
+                    title: 'Zaman',
+                    titleTextStyle: {
                         italic: false
                     }
                 },
                 vAxis: {
-                    title: 'Uploaded(KB)',
-                    titleTextStyle:{
+                    title: 'Yüklenen(KB)',
+                    titleTextStyle: {
                         italic: false
                     }
                 },
@@ -173,9 +192,9 @@
                         $mem = $mem.substr(0, $mem.length - 1)
                         $memtotal = $response[$response.length - 1][0].memTotal
                         var memData = google.visualization.arrayToDataTable([
-                            ['Unused', 'Used'],
-                            ['Unused', parseFloat($memtotal)],
-                            ['Used', parseFloat($mem)],
+                            ['Müsait', 'Kullanılan'],
+                            ['Müsait', parseFloat($memtotal)],
+                            ['Kullanılan', parseFloat($mem)],
                         ]);
                         memChart.draw(memData);
 
@@ -216,8 +235,7 @@
                                 i++
                             }
 
-                        }
-                        else {
+                        } else {
                             for (net in interface) {
                                 row[i] = parseFloat(interface[net])
                                 i++
@@ -242,12 +260,11 @@
                         ok++
                         //NET STATS ENDS
                         // delete variables
-                        delete interface2, interface, row2, row, col, net, i,rowz,disk
+                        delete interface2, interface, row2, row, col, net, i, rowz, disk
                         delete $mem, $memtotal, $cpu;
                         // delete variables
-                    }
-                    else {
-                        alert("Error loading page\n");
+                    } else {
+                        alert("Sayfa Yüklenirken Hata\n");
                         window.location = ''
                     }
                 }

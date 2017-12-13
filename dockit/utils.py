@@ -135,6 +135,8 @@ class ContainerMixin:
         net = j_details['NetworkSettings']['Networks']
         if net.get('dbox_macvlan', None):
             details_d['ip_addr'] = net['dbox_macvlan']['IPAddress']
+        #elif net.get('dbox_bridge', None):
+        #    details_d['ip_addr'] = net['dbox_bridge']['IPAddress']
         else:
             details_d['ip_addr'] = net['dbox_bridge']['IPAddress']
 

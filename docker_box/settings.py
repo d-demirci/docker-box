@@ -6,11 +6,11 @@ BROKER_URL = 'django://'
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = 's6tb**69y889azix^_hsxc^*0&vt*thix2jso4@^1)i!!wby0w'
+SECRET_KEY = 'd3n1zff5@ad8jgt!6atbgx%bcddgb=%wda9=p@rayw$5)2h+90(+yood3n1z'
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.56.1' ,'172.18.0.1']
 
 
 INSTALLED_APPS = [
@@ -93,8 +93,12 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    '/home/forensic/docker_box/docker-box/static/',
+]
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATIC_ROOT = '/home/forensic/docker_box/docker-box/static'
 STATIC_URL = '/static/'
 
 
@@ -123,4 +127,4 @@ LOGGING = {
 }
 
 DOCKER_API_PORT = '2375'
-HOST_IP_ADDR = ''
+HOST_IP_ADDR = '192.168.56.1'

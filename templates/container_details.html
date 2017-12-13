@@ -2,7 +2,8 @@
 {% load paginate %}
 {% load staticfiles %}
 {% load sizes %}
-{% block title %} {{ container.Name|remove_slash }}'s Dashboard {% endblock %}
+{% block title %} {{ container.Name|remove_slash }} - Panel {% endblock %}
+{% block contenttitle %} {{ container.Name|remove_slash }} - Panel {% endblock %}
 {% block bodycontent %}
     <link href="https://cdn.jsdelivr.net/xterm/2.3.2/xterm.css" rel="stylesheet">
     <br/>
@@ -12,32 +13,32 @@
 
         <div class="col-md-6">
         <h4>
-            Container Id/Name : {{ container.Id|slice:"12" }} / {{ container.Name|remove_slash }}
+            Konteyner Id/Adı : {{ container.Id|slice:"12" }} / {{ container.Name|remove_slash }}
         </h4>
         </div>
         <div class='col-md-6 icon-wrapper'>
             {% ifequal container.State.Status "running" %}
             <a class="btn2 tooltip2 pull-right" href="{% url 'docker_box:backup_container' container_id=container_id %}"
-                data-placement="bottom" title='Backup'>
+                data-placement="bottom" title='Yedek Al'>
                 <i class="fa fa-hdd-o fa-1x custom-icon" aria-hidden="true"></i>
             </a>
-            <a class='btn2 pull-right tooltip2' title="SSH Access" data-placement='bottom'
+            <a class='btn2 pull-right tooltip2' title="SSH Erişimi" data-placement='bottom'
                href="{% url 'docker_box:ssh_access' container_id=container_id %}">
                <i class="fa fa-key fa-1x custom-icon"></i>
             </a>
-            <a class="btn2 pull-right tooltip2" id="stop-this-container" href="{% url 'docker_box:container-list' %}" data-placement='bottom' title="Stop">
+            <a class="btn2 pull-right tooltip2" id="stop-this-container" href="{% url 'docker_box:container-list' %}" data-placement='bottom' title="Durdur">
                 <i class="fa fa-stop fa-1x custom-icon" aria-hidden="true"></i>
             </a>
             {% else %}
-            	<a class="btn2 pull-right tooltip2" href="{% url 'docker_box:backup_container' container_id=container_id %}" data-placement='bottom' title="Backup">
+            	<a class="btn2 pull-right tooltip2" href="{% url 'docker_box:backup_container' container_id=container_id %}" data-placement='bottom' title="Yedekle">
                     <i class="fa fa-hdd-o fa-1x custom-icon" aria-hidden="true"></i>
                 </a>
-                <a class='btn2 tooltip2 pull-right' data-placement='bottom' title="SSH Access"
+                <a class='btn2 tooltip2 pull-right' data-placement='bottom' title="SSH Erişimi"
                    href="{% url 'docker_box:ssh_access' container_id=container_id %}">
                    <i class="fa fa-key fa-1x custom-icon"></i>
                 </a>
                 <a class="btn2 tooltip2 pull-right" id="start-this-container" href="{% url 'docker_box:container-details' container_id=container_id %}"
-                    data-placement='bottom' title="Start">
+                    data-placement='bottom' title="Başlat">
                     <i class="fa fa-play-circle fa-1x custom-icon" aria-hidden="true"></i>
                 </a>
             {% endifequal %}
@@ -45,10 +46,10 @@
         <br/><br/><br/><br/><br/>
           <div class="col-md-12">
             <ul class="nav nav-tabs" role="tablist">
-              <li class="active" id="overview_button"><a class='a_cd' href="#overview" aria-controls="Overview" role="tab" data-toggle="tab">STATS</a></li>
-              <li id="images_button"><a href="#backup_images" class='a_cd' aria-controls="BackupImages" role="tab" data-toggle="tab">BACKUP IMAGES</a></li>
-              <li id="runprocesses_button"><a href="#running_processes" class='a_cd' aria-controls="Running Processes" role="tab" data-toggle="tab">RUNNING PROCESSES</a></li>
-              <li id="filechanges_button"><a href="#file_changes" aria-controls="File Changes" class='a_cd' role="tab" data-toggle="tab">FILE CHANGES</a></li>
+              <li class="active" id="overview_button"><a class='a_cd' href="#overview" aria-controls="Overview" role="tab" data-toggle="tab">İSTATİSTİK</a></li>
+              <li id="images_button"><a href="#backup_images" class='a_cd' aria-controls="BackupImages" role="tab" data-toggle="tab">BACKUP IMAJLARI</a></li>
+              <li id="runprocesses_button"><a href="#running_processes" class='a_cd' aria-controls="Running Processes" role="tab" data-toggle="tab">ÇALIŞAN PROCESS LER</a></li>
+              <li id="filechanges_button"><a href="#file_changes" aria-controls="File Changes" class='a_cd' role="tab" data-toggle="tab">DOSYA DEĞİŞİKLİKLERİ</a></li>
               <li id="terminal_button"><a href="#terminal_changes" aria-controls="Terminal" role="tab" class='a_cd' data-toggle="tab">TERMINAL</a></li>
             </ul>
             <br/>
@@ -69,7 +70,7 @@
                   </div>
                   <div class="col-md-6 chart_col">
                     <div class="panel panel-default">
-                      <div class="panel-heading">Memory
+                      <div class="panel-heading">RAM
                         <br/>
                         <div id="mem_div" style="width: 100%; height: 100%;"></div>
                       </div>
@@ -80,7 +81,7 @@
                   </div>
                   <div class="col-md-6 chart_col">
                     <div class="panel panel-default">
-                      <div class="panel-heading">Network - Download
+                      <div class="panel-heading">Şebeke - İndirme
                         <br/>
                         <div id="nud" style="width: 100%; height: 100%;"></div>
                       </div>
@@ -91,7 +92,7 @@
                   </div>
                   <div class="col-md-6 chart_col">
                     <div class="panel panel-default">
-                      <div class="panel-heading">Network - Upload
+                      <div class="panel-heading">Şebeke - Yükleme
                         <br/>
                         <div id="nuu" style="width: 100%; height: 100%;"></div>
                       </div>
@@ -127,12 +128,12 @@
                     <table class="table ">
                       <thead>
                         <tr>
-                          <th width="20%">Ttile</th>
+                          <th width="20%">Başlık</th>
                           <th width="10%">Tag</th>
-                          <th width="10%">Image ID</th>
-                          <th width="15%">Size</th>
-                          <th width="20%">Date</th>
-                          <th width="8%">Actions</th>
+                          <th width="10%">İmaj ID</th>
+                          <th width="15%">Boyut</th>
+                          <th width="20%">Tarih</th>
+                          <th width="8%">İşlemler</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -152,7 +153,7 @@
                           <td>{{ image.details.created }}</td>
                           <td class="actions">
                             <!-- <a href="#edit" class="edit"><i class="fa fa-edit"></i></a> -->
-                            <a title="Remove This Image?" href="{% url 'docker_box:remove_image' name=image.name %}" class="trash remove-this-image"><i class="fa fa-trash"></i></a>
+                            <a title="İmajı Sil" href="{% url 'docker_box:remove_image' name=image.name %}" class="trash remove-this-image"><i class="fa fa-trash"></i></a>
                           </td>
                         </tr>
                         {% endfor %}
@@ -160,7 +161,7 @@
                     </table>
                     {% ifequal images|length 0 %}
                       <div class="row text-center">
-                        <h4>No images Found</h4>
+                        <h4>İmaj Yok</h4>
                       </div>
                       <div class="row text-center">
                         {% show_pages %}
@@ -171,7 +172,7 @@
               </div>
               {% ifequal container.State.Status "running" %}
               <div class="col-md-12 tab-pane fade in" id="running_processes">
-                <br/> 
+                <br/>
                 <div class="table_row">
                   <div class="table-responsive">
                     <table class="table ">
@@ -195,27 +196,27 @@
               </div>
               {% endifequal %}
               <div class="col-md-12 tab-pane fade in" id="file_changes">
-                <br/> 
+                <br/>
           			  <ul class="nav nav-tabs" id="myTab">
-          			    <li class='active'><a data-target="#modified" data-toggle="tab">Modified</a></li>
-          			    <li><a data-target="#added" data-toggle="tab">Added</a></li>
-          			    <li><a data-target="#deleted" data-toggle="tab">Deleted</a></li>
+          			    <li class='active'><a data-target="#modified" data-toggle="tab">Düzenlenen</a></li>
+          			    <li><a data-target="#added" data-toggle="tab">Eklenen</a></li>
+          			    <li><a data-target="#deleted" data-toggle="tab">Silinen</a></li>
           			  </ul>
           			  <div class="tab-content">
           			    <div class="tab-pane active" id="modified">
                       <br/>
-                      <ol type='list-style-type:none' class='modified_class'></ol>  
-                      <a href={% url 'docker_box:diff' container_id=container_id total=1 %}>Full List..</a>
+                      <ol type='list-style-type:none' class='modified_class'></ol>
+                      <a href={% url 'docker_box:diff' container_id=container_id total=1 %}>Tüm Liste..</a>
           			    </div>
           			    <div class="tab-pane" id="added">
                       <br/>
-                      <ol type='list-style-type:none' class='added_class'></ol>  
-                      <a href={% url 'docker_box:diff' container_id=container_id total=1 %}>Full List..</a>
+                      <ol type='list-style-type:none' class='added_class'></ol>
+                      <a href={% url 'docker_box:diff' container_id=container_id total=1 %}>Tüm Liste..</a>
                     </div>
           			    <div class="tab-pane" id="deleted">
                       <br/>
-                      <ol type='list-style-type:none' class='deleted_class'></ol>  
-                      <a href={% url 'docker_box:diff' container_id=container_id total=1 %}>Full List..</a>
+                      <ol type='list-style-type:none' class='deleted_class'></ol>
+                      <a href={% url 'docker_box:diff' container_id=container_id total=1 %}>Tüm Liste..</a>
                     </div>
           			  </div>
               </div>
@@ -249,7 +250,7 @@ $('body').on('click', '#stop-this-container', function (e) {
     $('.loader').show();
     $.get("{% url 'docker_box:stop-container' container_id=container.Id|slice:"12" %}", function (data, status, xhr) {
         if (status == 'success') {
-            if (data['success'] == 'stopped' || data['success'] == 'Already Stopped') {
+            if (data['success'] == 'stopped' || data['success'] == 'Zaten Çalışmıyor') {
                 window.location = '{% url "docker_box:container-list" %}';
             }
             else {
@@ -264,7 +265,7 @@ $('body').on('click', '#start-this-container', function (e) {
     e.preventDefault();
     $('.loader').show();
     $.get("{% url 'docker_box:start-container' container_id=container.Id|slice:"12" %}", function (data, status, xhr) {
-        if (data['success'] == 'started' || data['success'] == 'Already Started') {
+        if (data['success'] == 'started' || data['success'] == 'Zaten Ayakta') {
             window.location = '';
         }
         else {
@@ -307,12 +308,12 @@ function run_charts(){
         //NET STATS
         var net_data = new google.visualization.DataTable();
         net_data.addColumn('number', '');
-        net_data.addColumn('number', 'Download');
+        net_data.addColumn('number', 'İndirme');
         var net_chart = new google.visualization.LineChart(document.getElementById('nud'));
         //UPLOAD
         var netu_data = new google.visualization.DataTable();
         netu_data.addColumn('number', '');
-        netu_data.addColumn('number', 'Upload');
+        netu_data.addColumn('number', 'Yükleme');
         var netu_chart = new google.visualization.LineChart(document.getElementById('nuu'));
         //NET STATS END
         $req = new XMLHttpRequest();
@@ -348,13 +349,13 @@ function run_charts(){
                     //NET STATS
                     var net_options = {
                         hAxis: {
-                            title: 'Download',
+                            title: 'İmdirme',
                             titleTextStyle:{
                                 italic: false
                             }
                         },
                         vAxis: {
-                            title: 'Download ' + $response[$response.length - 1][0].netDowUnit,
+                            title: 'İndirme ' + $response[$response.length - 1][0].netDowUnit,
                             titleTextStyle:{
                                 italic: false
                             }
@@ -366,13 +367,13 @@ function run_charts(){
 
                     var netu_options = {
                         hAxis: {
-                            title: 'Upload',
+                            title: 'Yükleme',
                         titleTextStyle:{
                             italic: false
                         }
                         },
                         vAxis: {
-                            title: 'Upload ' + $response[$response.length - 1][0].netUpUnit,
+                            title: 'Yükleme ' + $response[$response.length - 1][0].netUpUnit,
                             titleTextStyle:{
                                 italic: false
                             }
@@ -385,7 +386,7 @@ function run_charts(){
                     //NET STATS ENDS
                 }
                 else {
-                    alert("Error loading page\n");
+                    alert("Sayfa Yükleme Hatası\n");
                     window.location = ''
                 }
             }
@@ -446,7 +447,7 @@ $('#runprocesses_button').click(function(){
   $req.abort();
   socket.close();
 });
-  
+
 function diff_func(){
     $.ajax({
         type: "POST",
@@ -456,13 +457,13 @@ function diff_func(){
             var added_str = ''
             var deleted_str = ''
             for(i=0; i<response.modified.length; i++){
-                modified_str += '<li>'+response.modified[i]+'</li>'            
+                modified_str += '<li>'+response.modified[i]+'</li>'
             }
             for(i=0; i<response.added.length; i++){
-                added_str += '<li>'+response.added[i]+'</li>'            
+                added_str += '<li>'+response.added[i]+'</li>'
             }
             for(i=0; i<response.deleted.length; i++){
-                deleted_str += '<li>'+response.deleted[i]+'</li>'            
+                deleted_str += '<li>'+response.deleted[i]+'</li>'
             }
 			$('.modified_class').html(modified_str)
 			$('.added_class').html(added_str)
@@ -481,7 +482,7 @@ function diff(){
 
 function diffstop(){
   if(typeof myDiff !== undefined) {
-    clearInterval(myDiff);    
+    clearInterval(myDiff);
   }
 }
 
@@ -493,7 +494,7 @@ $('#filechanges_button').click(function(){
 });
 
 function terminal_func(){
-  $('#shell').css('display', 'block');	
+  $('#shell').css('display', 'block');
   $.ajax({
     url: '{% url "docker_box:terminal" container_id %}',
     type: 'get',
@@ -548,4 +549,3 @@ $(document).ready(function(){
 });
 </script>
 {% endblock %}
-

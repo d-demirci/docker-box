@@ -2,23 +2,29 @@
 {% load staticfiles %}
 {% block title %} Dockerbox Login {% endblock %}
 {% block bodycontent %}
+<style>
+body{
+  background-color: #312f33;
+}
+</style>
     <div class="container">
         <div class="row marl login_row">
             <div class="col-md-offset-3 col-md-6 col-md-offset-3">
                 <div class="login_block">
                     <div class="login_form_block">
-                        <div class="welcome text-center">Docker box</div>
+                        <div class="welcome text-center">Jandarma Genel Komutanlığı Siber Yetenek Değerlendirme Sistemi</div>
                         <p class="hint">{{ message }}</p>
                         <form method="POST" action="">
                             {% csrf_token %}
                             <div class="form-group">
-                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email"
+                              <img src="{% static 'images/jlogo.png' %}" class="img-responsive center-block login-logo" />
+                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="e-posta"
                                        name="email">
                                 <br/>
                                 <input type="password" class="form-control" id="exampleInputPassword1"
-                                       placeholder="Password" name="password">
+                                       placeholder="şifre" name="password">
                             </div>
-                            <button type="submit" class="btn pull-right btn-default">Login</button>
+                            <button type="submit" class="btn pull-right btn-default">Giriş Yap</button>
                         </form>
                     </div>
                 </div>

@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% load sizes %}
-
+{% block title %} İmajlar {% endblock %}
+{% block contenttitle %} İmajlar {% endblock %}
 {% block content %}
     <div class="row marl search_row">
         <div class="input-group">
             <input id="txt-image-search" type="text" class="form-control text-filter" name="textFilter" tabindex="1"
-                   placeholder="Search docker images">
+                   placeholder="Docker Imaj Ara">
             <div class="input-group-btn">
                 <button type="button" class="btn btn-primary search btn-icon" data-action="search">
                     <span class="glyphicon glyphicon-search"></span>
@@ -19,7 +20,6 @@
     <div class="col-md-12">
         <div class="container">
             <div class="row">
-                <h2 class="text-center">Images</h2>
                 <div class="row">
                     {% for image in images %}
                         <div class="col-md-4 head_box">

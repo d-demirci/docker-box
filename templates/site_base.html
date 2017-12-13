@@ -1,86 +1,561 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <!-- Meta, title, CSS, favicons, etc. -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}{% endblock %}</title>
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <!--<link href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,600,700,800,900" rel="stylesheet">-->
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <!--<script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>-->
-    <!-- Custom styling plus plugins -->
-    <link href="{% static 'css/main.css' %}" rel="stylesheet">
-</head>
-<body class="inner_pages_bg">
-<!-- header starts here -->
-<header>
-    <nav class="navbar navbar-default">
-        <div>
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{% url 'docker_box:index' %}">DockerBox</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    {% if user.is_superuser %}
-                    <li><a href="{% url 'docker_box:docker-images-list' %}"> Images </a></li>
-                    {% endif %}
-                    <li><a href="{% url 'docker_box:container-list' %}">Containers</a></li>
-                    {% if user.is_superuser %}
-                    <li><a href="{% url 'docker_box:users-list' %}"><i class="fa fa-users sub_icon"
-                                                                       aria-hidden="true"></i>Users</a></li>
-                    <li><a href="{% url 'docker_box:ip-list' %}"><i class="fa fa-cogs sub_icon" aria-hidden="true"></i>Settings</a>
-                    </li>
-                    {% endif %}
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">Welcome! {% if request.user.first_name %}{{ request.user.first_name }}
-                            {% else %}{{ request.user.username }} {% endif %}<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{% url 'docker_box:logout' %}">Logout</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container-fluid -->
-    </nav>
-</header>
 
-{% block bodycontent %}
-{% endblock %}
-<div class="loader">
-    <div class="text-center loadingtext"></div>
-</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-        integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-        crossorigin="anonymous"></script>
+<html lang="en" class=" -webkit-">
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>p1ng_p0ng :: {% block title %}{% endblock %}</title>
+<!-- Tell the browser to be responsive to screen width -->
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+	<link rel="apple-touch-icon" sizes="144x144" href="{% static 'liberator/images/apple-touch-icon-ipad-retina.png' %}">
+	<link rel="apple-touch-icon" sizes="114x114" href="{% static 'liberator/images/apple-touch-icon-iphone-retina.png' %}">
+	<link rel="apple-touch-icon" sizes="72x72" href="{% static 'liberator/images/apple-touch-icon-ipad.png' %}">
+	<link rel="apple-touch-icon" sizes="57x57" href="{% static 'liberator/images/apple-touch-icon-iphone.png' %}">
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <!-- Font Awesome -->
+  <!--<link rel="stylesheet" href="{%  static '/font-awesome/css/font-awesome.min.css' %}">-->
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" >
+
+	<link href="{% static 'liberator/css/main.css' %}" rel="stylesheet" type="text/css" />
+  <link href="{% static 'liberator/css/style.css' %}" rel="stylesheet" type="text/css" />
+
+
+</head>
+<body style="height: auto; min-height: 100%;">
+
+	<div id="loading" style="display: none;">
+		<div>
+			<div></div>
+		    <div></div>
+		    <div></div>
+		</div>
+	</div>
+
+	<div id="wrapper" style="height: auto; min-height: 100%;">
+		<div id="top">
+
+			<div class="main-logo">
+				<a href="{% url 'docker_box:index' %}"><img src="{% static 'liberator/images/logo_2.png' %}"></a>
+			</div>
+
+			<div class="m-nav"><i class="fa fa-bars"></i></div>
+
+			<div class="profile-nav">
+				<ul>
+					<li class="profile-user-info">
+						<a href="#" onclick="return false;" class="dropdown-toggle" data-toggle="dropdown">
+							<img src="{% static 'liberator/images/user.jpg' %}" class="user-img">
+              Merhaba! {% if request.user.first_name %}{{ request.user.first_name }}
+               {% else %}{{ request.user.username }} {% endif %}<i class="fa fa-user"></i> <i class="fa fa-caret-down"></i></a>
+
+
+
+               <ul class="dropdown-menu">
+                 <!-- User image -->
+             <li class="user-header">
+              <img src="{% static 'liberator/images/user.jpg' %}" class="img-circle" alt="User Image">
+
+               <p>
+                 {% if request.user.first_name %}{{ request.user.first_name }}
+                  {% else %}{{ request.user.username }} {% endif %} - Hacker<br />
+                 <small>165 gündür üye</small>
+               </p>
+             </li>
+             <!-- Menu Body -->
+             <li class="user-body">
+               <div class="row">
+                 <div class="col-xs-4 text-center">
+                   <a href="#">Saygı</a>
+                 </div>
+                 <div class="col-xs-4 text-center">
+                   <a href="#">p1ng</a>
+                 </div>
+                 <div class="col-xs-4 text-center">
+                   <a href="#">p0ng</a>
+                 </div>
+               </div>
+               <!-- /.row -->
+             </li>
+             <!-- Menu Footer-->
+             <li class="user-footer">
+               <div class="pull-left">
+                 <a href="#" class="btn btn-default btn-flat">Profile</a>
+               </div>
+               <div class="pull-right">
+                 <a href="{% url 'docker_box:logout' %}" class="btn btn-default btn-flat">Çıkış Yap</a>
+               </div>
+             </li>
+
+               </ul>
+
+					</li>
+					<li>
+						<a href="#" onclick="return false;">
+							<i class="fa fa-gear"></i> Ayarlar
+						</a>
+					</li>
+					<li>
+						<a href="#" onclick="return false;" class="profile-badge-info">
+							<i class="fa fa-envelope"></i> Mesajlar
+						</a>
+						<span class="badge profile-badge blue">16</span>
+					</li>
+					<li>
+						<a href="{% url 'docker_box:logout' %}">
+							<i class="fa fa-times-circle"></i> Çıkış
+						</a>
+					</li>
+				</ul>
+			</div>
+
+		</div> <!-- /top -->
+
+		<div id="sidebar">
+			<!--
+       <div class="search">
+				<input type="search" placeholder="Search here...">
+				<i class="fa fa-search"></i>
+			</div>
+    -->
+
+			<ul class="main-nav">
+        <li class="nav-info" >
+            <div> Sunucu: <span  id="vpnServer">hat-1</span>
+              <br>
+                  Yük: <span ><span id="vpnLoad">193 </span> Kullanıcı </span>
+              </div>
+        </li>
+
+				<li class="{% if request.path == '/' or request.path == '' %}{{ 'active' }}{% endif %}">
+					  <a href="{% url 'docker_box:index' %}" ><i class="fa fa-home"></i> Panel</a>
+				</li>
+				<li class="collapsible">
+					<a href="#" onclick="return false;"><i class="fa fa-list"></i> Kullanım</a>
+					<ul class="sub-menu">
+						<li><a href="{% url 'docker_box:index' %}"><i class="fa fa-pencil"></i>Kurallar</a></li>
+						<li><a href="{% url 'docker_box:index' %}"><i class="fa fa-tags"></i>Duyurular</a></li>
+            <li><a href="{% url 'docker_box:index' %}"><i class="fa fa-lightbulb-o"></i>Fikrim Geldi</a></li>
+            <li><a href="{% url 'docker_box:index' %}"><i class="fa fa-question"></i>Destek</a></li>
+					</ul>
+				</li>
+        <li class="collapsible {% if '/container/' in request.path %}{{ 'open' }}{% endif %}">
+					<a href="#" onclick="return false;"><i class="fa fa-laptop"></i> Makineler</a>
+					<ul class="sub-menu">
+						<li class="{% if '/container/active/' in request.path %}{{ 'active' }}{% endif %}">
+              <a href="{% url 'docker_box:container-active' %}"><i class="fa fa-star-o"></i>Aktif</a></li>
+						<li class="{% if '/container/passive/' in request.path %}{{ 'active' }}{% endif %}">
+              <a href="{% url 'docker_box:container-passive' %}"><i class="fa fa-star"></i>Pasif</a></li>
+            <li><a href="{% url 'docker_box:container-list' %}"><i class="fa fa-list"></i>Tümü</a></li>
+            <li><a href="{% url 'docker_box:container-passive' %}"><i class="fa fa-star-half"></i>Bekleyen</a></li>
+            <li><a href="{% url 'docker_box:container-list' %}"><i class="fa fa-trophy"></i>Benimkiler</a></li>
+					</ul>
+				</li>
+        <li class="collapsible">
+					<a href="#" onclick="return false;"><i class="fa fa-magic"></i> Yetenekler</a>
+					<ul class="sub-menu">
+						<li><a href="{% url 'docker_box:container-list' %}"><i class="fa fa-backward"></i>Reverse</a></li>
+						<li><a href="{% url 'docker_box:container-list' %}"><i class="fa fa-key"></i>Crypto</a></li>
+            <li><a href="{% url 'docker_box:container-list' %}"><i class="fa fa-picture-o"></i>Stego</a></li>
+            <li><a href="{% url 'docker_box:container-list' %}"><i class="fa fa-coffee"></i>Pwn</a></li>
+            <li><a href="{% url 'docker_box:container-list' %}"><i class="fa fa-globe"></i>Web</a></li>
+            <li><a href="{% url 'docker_box:container-list' %}"><i class="fa fa-arrows"></i>Çeşitli</a></li>
+            <li><a href="{% url 'docker_box:container-list' %}"><i class="fa fa-search"></i>Adli inceleme</a></li>
+					</ul>
+				</li>
+        <li class="collapsible {% if '/images/' in request.path %}{{ 'open' }}{% endif %}">
+					<a href="#" onclick="return false;"><i class="fa fa-usb"></i> İmajlar</a>
+					<ul class="sub-menu">
+						<li class="{% if '/images/' in request.path %}{{ 'active' }}{% endif %}">
+              <a href="{% url 'docker_box:docker-images-list' %}"><i class="fa fa-star-o"></i>Hazır</a></li>
+						<li><a href="{% url 'docker_box:docker-images-list' %}"><i class="fa fa-star"></i>Kullanımda</a></li>
+            <li><a href="{% url 'docker_box:docker-images-list' %}"><i class="fa fa-list"></i>Tümü</a></li>
+            <li><a href="{% url 'docker_box:docker-images-list' %}"><i class="fa fa-star-half"></i>Bekleyen</a></li>
+            <li><a href="{% url 'docker_box:docker-images-list' %}"><i class="fa fa-trophy"></i>Benimkiler</a></li>
+					</ul>
+				</li>
+
+        <li class="collapsible {% if '/settings/' in request.path %}{{ 'open' }}{% endif %}">
+					<a href="#" onclick="return false;"><i class="fa fa-cogs"></i> Ayarlar</a>
+					<ul class="sub-menu">
+						<li class="{% if '/settings/users/' in request.path %}{{ 'active' }}{% endif %}">
+              <a href="{% url 'docker_box:users-list' %}"><i class="fa fa-user-secret"></i> Kullanıcılar</a></li>
+						<li class="{% if '/settings/ip/list' in request.path %}{{ 'active' }}{% endif %}">
+              <a href="{% url 'docker_box:ip-list' %}"><i class="fa fa-cogs"></i> Ip</a></li>
+					</ul>
+				</li>
+
+
+        <li><a href="{% url 'docker_box:logout' %}"><i class="fa fa-sign-out"></i> Çıkış</a></li>
+
+				<li><a href="{% url 'docker_box:index' %}"><i class="fa fa-bar-chart-o"></i> İstatistik</a></li>
+			</ul>
+		</div> <!-- /sidebar -->
+
+		<div id="content" class="clearfix" style="min-height: 890px;">
+
+			<div class="header">
+
+				<h1 class="page-title">{% block contenttitle %}{% endblock %}</h1>
+				<div class="stats">
+					<div class="stat" id="st-visits">
+						<div class="st-chart">
+							<span id="stats_visits" values="80,20"><canvas width="20" height="20" style="display: inline-block; width: 20px; height: 20px; vertical-align: top;"></canvas></span><br>
+							80%
+						</div>
+						<div class="st-detail">
+							28549<br><span>Kullanıcı</span>
+						</div>
+					</div> <!-- /stat -->
+					<div class="stat" id="st-users">
+						<div class="st-chart">
+							<span id="stats_users" values="50,50"><canvas width="20" height="20" style="display: inline-block; width: 20px; height: 20px; vertical-align: top;"></canvas></span><br>
+							50%
+						</div>
+						<div class="st-detail">
+							1278<br><span>p1ng</span>
+						</div>
+					</div> <!-- /stat -->
+					<div class="stat" id="st-orders">
+						<div class="st-chart">
+							<span id="stats_orders" values="65,35"><canvas width="20" height="20" style="display: inline-block; width: 20px; height: 20px; vertical-align: top;"></canvas></span><br>
+							65%
+						</div>
+						<div class="st-detail">
+							1152<br><span>p0ng</span>
+						</div>
+					</div> <!-- /stat -->
+          <!--
+          <button class="btn btn-green"><i class="fa fa-refresh"></i> Güncelle</button>
+					<button class="btn btn-blue"><i class="fa fa-chevron-circle-right"></i> Gönder</button>
+        -->
+				</div> <!-- /stats -->
+
+			</div> <!-- /header -->
+
+			<div class="breadcrumbs">
+				<i class="fa fa-home"></i> Ana Sayfa <i class="fa fa-caret-right"></i> Panel
+			</div>
+
+			<div class="wrp clearfix">
+
+        {% block bodycontent %}
+        {% endblock %}
+
+
+
+			</div> <!-- /wrp -->
+
+		</div> <!-- /content -->
+		<footer class="footer">
+			2017 ©  <a href="dd">dd</a>
+		</footer>
+
+	</div> <!-- /wrapper -->
+
+
+	<script type="text/javascript" src="{% static 'liberator/js/prefixfree.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'liberator/js/jquery-1.10.2.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'liberator/js/jquery-ui.js' %}"></script>
+	<script type="text/javascript" src="{% static 'liberator/js/bootstrap.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'liberator/js/excanvas.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'liberator/js/jquery.flot.js' %}"></script>
+	<script type="text/javascript" src="{% static 'liberator/js/jquery.flot.resize.js' %}"></script>
+	<script type="text/javascript" src="{% static 'liberator/js/jquery.sparkline.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'liberator/js/jquery.hashchange.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'liberator/js/jquery.easytabs.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'liberator/js/toastr.min.js' %}"></script>
+
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
-<script type="text/javascript">
-    $(window).load(function () {
-        $(".loader").fadeOut("slow");
-    })
-</script>
-{% block extra_js %}
-{% endblock %}
+  <script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
+  <script type="text/javascript">
+
+		$(window).load(function(){
+			$('#loading').fadeOut(1000);
+
+			toastr.options = {
+			  "closeButton": true,
+			  "debug": false,
+			  "positionClass": "toast-bottom-right",
+			  "onclick": null,
+			  "showDuration": "300",
+			  "hideDuration": "1000",
+			  "timeOut": "5000",
+			  "extendedTimeOut": "1000",
+			  "showEasing": "swing",
+			  "hideEasing": "linear",
+			  "showMethod": "fadeIn",
+			  "hideMethod": "fadeOut"
+			}
+			setTimeout(function(){
+				toastr.info('<span style="color:#333;">Welcome to Liberator! The new clean Admin Template.</span>');
+			},2000) ;
+
+			setTimeout(function(){
+				toastr.warning('<span style="color:#333;">You could navigate the different sections to discover it...</span>');
+			},4500) ;
+
+		// $(document).ready(function(){
+
+			$('.collapsible > a').click(function(){
+				$(this).parent().toggleClass('open');
+				if( $(this).parent().siblings().hasClass('open') ){
+					$(this).parent().siblings().removeClass('open');
+				}
+			return false;
+			}) // Collapsible
+
+
+			// -------------------------- SPARKLINE miniCHARTS -----------------------------//
+
+			$("#stats_visits").sparkline('html',{
+		        type: 'pie',
+		        sliceColors: ['#499ac7','transparent'],
+		        offset:-90,
+		        tooltipClassname:'tooltip-sp',
+		        disableHighlight:true
+		    });
+		    $("#stats_users").sparkline('html',{
+		        type: 'pie',
+		        sliceColors: ['#37343b','transparent'],
+		        offset:-90,
+		        tooltipClassname:'tooltip-sp',
+		        disableHighlight:true
+		    });
+		    $("#stats_orders").sparkline('html',{
+		        type: 'pie',
+		        sliceColors: ['#83a854','transparent'],
+		        offset:-90,
+		        tooltipClassname:'tooltip-sp',
+		        disableHighlight:true
+		    });
+
+
+		    // -------------------------- FLOT CHARTS -----------------------------//
+
+		    var sin = [], cos = [];
+		    for (var i = 0; i < 20; i += 0.5) {
+		        sin.push([i, Math.sin(i-1.5)]);
+		        cos.push([i, Math.cos(i+1.6)]);
+		    }
+
+		    var sin2 = [], cos2 = [];
+		    for (var i = 0; i < 40; i += 0.7) {
+		        sin2.push([i, Math.sin(i-0.23) - 0.1]);
+		        cos2.push([i, Math.cos(i+0.80)]);
+		    }
+
+		    var sin3 = [], cos3 = [];
+		    for (var i = 0; i < 74; i += 0.7) {
+		        sin3.push([i, Math.sin(i-0.23) - 0.1]);
+		        cos3.push([i, Math.cos(i+0.80)]);
+		    }
+
+		    // Chart Month
+		    var plot = $.plot($("#chart-month"),
+		           [ { data: sin, label: "sin(x)"}, { data: cos, label: "cos(x)" } ], {
+		               series: {
+		                   lines: { show: true },
+		                   points: { show: true }
+		               },
+		               grid: { hoverable: true, clickable: true },
+		               yaxis: { min: -1.1, max: 1.1 },
+		               xaxis: { min: 0, max: 14 },
+		               legend: {
+		                    show: true,
+		                    // margin: number of pixels or [x margin, y margin]
+		                    //container: '.cLegend'
+		                    // sorted: null/false, true, "ascending", "descending", "reverse", or a comparator
+		                },
+		                colors: [ '#52aed3', '#83a854' ]
+		             });
+
+		    // Chart Week
+		     var plot = $.plot($("#chart-week"),
+		           [ { data: sin2, label: "sin(x)"}, { data: cos2, label: "cos(x)" } ], {
+		               series: {
+		                   lines: { show: true },
+		                   points: { show: true }
+		               },
+		               grid: { hoverable: true, clickable: true },
+		               yaxis: { min: -1.1, max: 1.1 },
+		               xaxis: { min: 0, max: 14 },
+		               legend: {
+		                    show: true,
+		                    // margin: number of pixels or [x margin, y margin]
+		                    //container: '.cLegend'
+		                    // sorted: null/false, true, "ascending", "descending", "reverse", or a comparator
+		                },
+		                colors: [ '#52aed3', '#83a854' ]
+		             });
+
+		     // Chart Day
+		     var plot = $.plot($("#chart-day"),
+		           [ { data: sin3, label: "sin(x)"}, { data: cos3, label: "cos(x)" } ], {
+		               series: {
+		                   lines: { show: true },
+		                   points: { show: true }
+		               },
+		               grid: { hoverable: true, clickable: true },
+		               yaxis: { min: -1.1, max: 1.1 },
+		               xaxis: { min: 0, max: 74 },
+		               legend: {
+		                    show: true,
+		                    // margin: number of pixels or [x margin, y margin]
+		                    //container: '.cLegend'
+		                    // sorted: null/false, true, "ascending", "descending", "reverse", or a comparator
+		                },
+		                colors: [ '#52aed3', '#83a854' ]
+		             });
+
+
+		    function showTooltip(x, y, contents) {
+		        $('<div id="chart-tooltip" class="chart-tooltip">' + contents + '</div>').css( {
+		            position: 'absolute',
+		            display: 'none',
+		            top: y + 5,
+		            left: x + 5,
+		            'z-index': '9999',
+		            'color': '#fff',
+		            'font-size': '11px',
+		            opacity: 0.8
+		        }).appendTo("body").fadeIn(200);
+		    }
+
+		    var previousPoint = null;
+		    $(".chart").bind("plothover", function (event, pos, item) {
+		        $("#x").text(pos.x.toFixed(2));
+		        $("#y").text(pos.y.toFixed(2));
+
+		        if ($(".chart").length > 0) {
+		            if (item) {
+		                if (previousPoint != item.dataIndex) {
+		                    previousPoint = item.dataIndex;
+
+		                    $("#chart-tooltip").remove();
+		                    var x = item.datapoint[0].toFixed(2),
+		                        y = item.datapoint[1].toFixed(2);
+
+		                    showTooltip(item.pageX, item.pageY,
+		                                item.series.label + " of " + x + " = " + y);
+		                }
+		            }
+		            else {
+		                $("#chart-tooltip").remove();
+		                previousPoint = null;
+		            }
+		        }
+		    });
+
+		    $(".chart").bind("plotclick", function (event, pos, item) {
+		        if (item) {
+		            $("#clickdata").text("You clicked point " + item.dataIndex + " in " + item.series.label + ".");
+		            plot.highlight(item.series, item.datapoint);
+		        }
+		    });
+
+
+		    // -------------------------- jQueryUI SLIDERS -----------------------------//
+
+		    $('.slider').slider();
+
+		    $('.slider.range-min').slider({
+				range: "min",
+				slide: function( event, ui ) {
+			        $('.slider.range-min > a.ui-slider-handle').html("<div class='range-tooltip'>$ " + ui.value + "</div>")
+			      },
+			    stop: function( event, ui ) {
+			    	$('.range-tooltip').delay(1000).fadeOut();
+			    }
+			});
+
+			$('.slider.range-min').on( "slide", function( event, ui ) {
+				if($(this).slider('value') > 5){
+					$('.slider.range-min > a.ui-slider-handle').addClass('color');
+				} else {
+					$('.slider.range-min > a.ui-slider-handle').removeClass('color');
+				}
+			} );
+
+			$('.slider.range').slider({
+				range: true,
+			    max: 750,
+			    values: [ 75, 300 ],
+			    slide: function( event, ui ) {
+			    	var handleIndex = $(ui.handle).index(); // left:0 - right:2
+			    	if( handleIndex == 0 ){
+			    		$(ui.handle).html("<div class='range-tooltip'>$ " + ui.values[0] + "</div>");
+			    	} else if( handleIndex == 2 ){
+			    		$(ui.handle).html("<div class='range-tooltip'>$ " + ui.values[1] + "</div>");
+			    	}
+			      },
+			    stop: function( event, ui ) {
+			    	$('.range-tooltip').delay(1000).fadeOut();
+			    }
+			});
+
+			// Iteration to set the default value of Vertical Sliders
+
+			$('.slider.vertical').each(function(){
+				$(this).slider({
+				orientation: "vertical",
+			      range: "min",
+			      min: 0,
+			      max: 100,
+			      value: $(this).attr('data-vY')
+				})
+			})
+
+			$('.progressbar').each(function(){
+				var v = parseInt($(this).attr('value'));
+				$(this).progressbar({
+			      value: v
+			    })
+			})
+
+			$('.progressbar > .ui-progressbar-value').hover(function(){
+				$(this).html("<div class='progress-tooltip'>" + $(this).parent().progressbar('value') + " %</div>");
+				$('.progress-tooltip').delay(2000).fadeOut()
+			})
+
+			// eTabs
+			$('#eTabs').easytabs();
+
+			// Mobile Nav
+			$('.m-nav').click(function(){
+				$('.main-nav').toggleClass('open');
+			})
+
+			// Quick Nav clicks
+			$('.qn-arrow-left').click(function(){
+				var sel = $('.quick-nav ul').find('.active');
+				if( sel.hasClass('qn-first') ){
+					sel.removeClass('active');
+					sel.parent().find('.qn-last').addClass('active');
+				} else {
+					sel.removeClass('active').prev().addClass('active');
+				}
+			})
+			$('.qn-arrow-right').click(function(){
+				var sel = $('.quick-nav ul').find('.active');
+				if( sel.hasClass('qn-last') ){
+					sel.removeClass('active');
+					sel.parent().find('.qn-first').addClass('active');
+				} else {
+					sel.removeClass('active').next().addClass('active');
+				}
+			})
+
+
+
+		}) // Ready.
+	</script>
+
+  {% block extra_js %}
+  {% endblock %}
 </body>
 </html>

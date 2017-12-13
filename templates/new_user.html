@@ -1,7 +1,8 @@
 {% extends "site_base.html" %}
 {% load paginate %}
 {% load sizes %}
-{% block title %} Dockerbox Containers {% endblock %}
+{% block title %} Kullanıcı Oluştur {% endblock %}
+{% block contenttitle %} Kullanıcı Oluştur {% endblock %}
 {% block bodycontent %}
     <div class="row marl main_container">
         <div class="container">
@@ -20,9 +21,9 @@
                                 {% endfor %}
                                 <div class="form-group" style="display: flex;">
                                     <button type="submit" class="btn btn-info">{% if form.email.value %}
-                                        Update{% else %} Create {% endif %}</button>
+                                        Güncelle{% else %} Oluştur {% endif %}</button>
                                     &nbsp;&nbsp;&nbsp;
-                                    <button type="button" class="btn btn-info cancel">Cancel</button>
+                                    <button type="button" class="btn btn-info cancel">İptal</button>
                                 </div>
                             </form>
                         </div>

@@ -2,7 +2,7 @@ from django.conf.urls import url
 from .views import index, logout_user
 from .views import host_stats
 from .views import docker_images, search_images, pull_image, pull_image_progress, launch_image, remove_image
-from .views import container_list, container_details, start_container, restart_container, stop_container, edit_container, delete_container, container_stats
+from .views import  container_active,container_passive,container_list, container_details, start_container, restart_container, stop_container, edit_container, delete_container, container_stats
 from .views import users_list, new_user, edit_user, delete_user, change_password, container_diff, terminal
 from .views import ip_list, new_ip, edit_ip, delete_ip, backup_container, ssh_access, container_top, container_info
 
@@ -20,6 +20,9 @@ urlpatterns = [
     url(r'^images/(?P<name>.+)/remove/$', remove_image, name='remove_image'),
 
     url(r'^container/list/$', container_list, name='container-list'),
+    #default user can see
+    url(r'^container/active/$', container_active, name='container-active'),
+    url(r'^container/passive/$', container_passive, name='container-passive'),
     url(r'^container/(?P<container_id>[-\w]+)/$', container_details, name='container-details'),
     url(r'^container/(?P<container_id>[-\w]+)/start/$', start_container, name='start-container'),
     url(r'^container/(?P<container_id>[-\w]+)/restart/$', restart_container, name='restart-container'),
@@ -34,6 +37,8 @@ urlpatterns = [
     url(r'^container/(?P<container_id>[-\w]+)/(?P<total>[-\w]+)/diff/$', container_diff, name='diff'),
     url(r'^container/(?P<container_id>[-\w]+)/terminal/$', terminal, name='terminal'),
     url(r'^container/info/(?P<container_id>[-\w]+)/$', container_info, name='container_info'),
+
+
 
     # users
     url(r'^settings/users/$', users_list, name='users-list'),
