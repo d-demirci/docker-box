@@ -61,6 +61,7 @@ class ImageManager(models.Manager):
         except ObjectDoesNotExist:
             return None
 
+
 class Image(models.Model, ImageMixin):
     name = models.CharField(max_length=200)
     tag = models.CharField(max_length=200)

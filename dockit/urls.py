@@ -2,7 +2,7 @@ from django.conf.urls import url
 from .views import index, logout_user
 from .views import host_stats
 from .views import docker_images, search_images, pull_image, pull_image_progress, launch_image, remove_image
-from .views import  container_active,container_passive,container_list, container_details, start_container, restart_container, stop_container, edit_container, delete_container, container_stats
+from .views import container_active,container_passive,container_list, container_details, start_container, restart_container, stop_container, edit_container, delete_container, container_stats
 from .views import users_list, new_user, edit_user, delete_user, change_password, container_diff, terminal
 from .views import ip_list, new_ip, edit_ip, delete_ip, backup_container, ssh_access, container_top, container_info
 
