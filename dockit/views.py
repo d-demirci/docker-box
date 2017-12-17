@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from os import statvfs, uname
 import time
 from socket import socket
@@ -17,7 +18,6 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.http import condition
 from docker_box.settings import BASE_DIR, DOCKER_API_PORT, HOST_IP_ADDR
 
-
 def admin_required(function):
     def check_admin(request, *args, **kwargs):
         if not request.user.is_superuser:
@@ -34,9 +34,9 @@ def index(request):
                 login(request, user)
                 return HttpResponseRedirect(request.GET.get('next') or '/')
             else:
-                response_data = {'message': "Your account has been disabled!"}
+                response_data = {'message': "Hesabınız devre dışı!"}
         else:
-            response_data = {'message': 'The username and password are incorrect.'}
+            response_data = {'message': 'Kullanıcı adı veya şifre hatalı!.'}
         return render(request, 'login.html', response_data)
 
     elif request.user.is_authenticated():
@@ -82,6 +82,8 @@ def stream_host_stats():
 @admin_required
 def docker_images(request):
     images = Image.objects.filter(snapshot=None, is_snapshot=False)
+    """logging.info('Images'+map( str, list(images)))"""
+    """images = Image.objects"""
     uuid_token = str(uuid.uuid4())
     return render(request, "images_list.html", {'images': images, 'uuid_token': uuid_token})
 
@@ -327,7 +329,7 @@ def pull_image_progress(request, uuid_token):
     if data:
         return JsonResponse(data, safe=False)
     else:
-        return JsonResponse({"status": "Pulling Please wait..."})
+        return JsonResponse({"status": "Çekiyor Lütfen Bekleyin..."})
 
 
 @login_required
