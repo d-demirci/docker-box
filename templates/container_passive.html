@@ -1,0 +1,166 @@
+{% extends "site_base.html" %}
+{% load paginate %}
+{% load sizes %}
+{% block title %} Mevcut Makineler {% endblock %}
+{% block contenttitle %} Mevcut Makineler {% endblock %}
+{% block bodycontent %}
+<!-- main_container starts here -->
+
+<div class="fluid">
+    <div class="widget grid12">
+        <div class="widget-header">
+            <div class="widget-title">
+                <i class="fa fa-laptop"></i> Hazır Makineler
+            </div>
+            <div class="widget-controls">
+                <div class="badge msg-badge">Sayı</div>
+            </div>
+        </div> <!-- /widget-header -->
+
+        <div class="widget-content pad20f">
+
+            <div class="table_row">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="12%">Id</th>
+                                <th width="8%">HostName</th>
+                                <th width="9%">Imaj</th>
+                                <th width="10%">Ram</th>
+                                <th width="10%">Core Sayısı</th>
+                                <th width="12%">IP Adresi</th>
+                                <th width="12%">Kullanıcı</th>
+                                <th width="12%">Oluşturuldu</th>
+                                <th width="15%">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if per_page %}
+                            {% paginate per_page idle_containers_list %}
+                            {% else %}
+                            {% paginate 5 idle_containers_list %}
+                            {% endif %}
+                            {% for container in idle_containers_list %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'docker_box:container-details' container.container_id %}">{{ container.container_id }}</a>
+                                </td>
+                                <td>{{ container.hostname }}</td>
+                                <td>{{ container.image.name }}</td>
+                                <td>{{ container.memory|floatformat:2 }} MB</td>
+                                <td>{{ container.cores }}</td>
+                                <td>{{ container.ip.ip_addr }}</td>
+                                <td>
+                                    {% if container.user.all|length == 1 %}
+                                    {% for u in container.user.all %}
+                                    {{ u }}
+                                    {% endfor %}
+                                    {% else %}
+                                    <select>
+                                        <option>--Atanmış Kullanıcı--</option>
+                                        {% for u in container.user.all %}
+                                        <option>{{ u }}</option>                                        {% endfor %}
+                                    </select>
+                                    {% endif %}
+                                </td>
+                                <td>{{ container.created }}</td>
+                                <td class="actions">
+                                    <div class="btn-group">
+                                    <a href="{% url 'docker_box:start-container' container_id=container.container_id %}"
+                                       class="btn btn-blue start-this-container"><i class="fa fa-play"></i></a>
+                                    <a href="{% url 'docker_box:backup_container' container_id=container.container_id %}"
+                                       class="btn btn-green backup_container"><i class="fa fa-hdd-o"></i></a>
+                                    {% if container.user == container.image.user or request.user.is_superuser %}
+                                    <a href="{% url 'docker_box:edit_container' container_id=container.container_id %}"
+                                       class="btn btn-blue red-this-container"><i class="fa fa-edit"></i></a>
+                                    <a href="{% url 'docker_box:delete_container' container_id=container.container_id %}"
+                                       class="btn btn-red delete-this-container"><i class="fa fa-trash"></i></a>
+                                    {% endif %}
+                                    <a title="SSH Erişimi" href="{% url 'docker_box:ssh_access' container_id=container.id %}"
+                                    class="btn btn-grey ssh_access"> <i class="fa fa-key"></i></a>
+                                  </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% ifequal idle_containers_list|length 0 %}
+                    <div class="marl row text-center">
+                        <h4>No Idle Containers...</h4>
+                    </div>
+                    {% endifequal %}
+
+                    <div class="marl row text-center">
+                        {% show_pages %}
+                    </div>
+
+
+                </div>
+                <h4 class='passwd'> {% if launched_container_id %}{{ launched_container_id }} Password:  {{ passphrase }}{% endif %}</h4>
+            </div>
+        </div>
+
+
+
+
+    </div>
+</div>
+
+
+<!-- main_container ends here -->
+
+{% endblock %}
+{% block extra_js %}
+<script type="text/javascript">
+    $('body').on('click', '.start-this-container', function (e) {
+        e.preventDefault();
+        $('.loader').show()
+        // console.log($(this))
+        URL = $(this).context.pathname
+        $.get(URL, function (data, status, xhr) {
+            if (data['success'] == 'started' || data['success'] == 'Already Started') {
+                $('.loader').hide()
+                window.location = "{% url 'docker_box:container-list' %}"
+            } else {
+                $('.loader').hide()
+                alert(data['ERROR'])
+                window.location = "{% url 'docker_box:container-list' %}"
+            }
+        });
+    });
+    $('body').on('click', '.stop-this-container', function (e) {
+        e.preventDefault();
+        $('.loader').show()
+        // console.log($(this))
+        URL = $(this).context.pathname
+        $.get(URL, function (data, status, xhr) {
+            if (data['success'] == 'stopped' || data['success'] == 'Already Stopped') {
+                $('.loader').hide()
+                window.location = "{% url 'docker_box:container-list' %}"
+            } else {
+                $('.loader').hide()
+                alert(data['ERROR'])
+                window.location = "{% url 'docker_box:container-list' %}"
+            }
+        });
+    });
+    $('body').on('click', '.restart-this-container', function (e) {
+        e.preventDefault();
+        $('.loader').show()
+        // console.log($(this))
+        URL = $(this).context.pathname
+        $.get(URL, function (data, status, xhr) {
+            if (data['success'] == 'restarted') {
+                $('.loader').hide()
+                window.location = "{% url 'docker_box:container-list' %}"
+            } else {
+                $('.loader').hide()
+                alert(data['ERROR'])
+                window.location = "{% url 'docker_box:container-list' %}"
+            }
+        });
+    });
+</script>
+
+{% endblock %}

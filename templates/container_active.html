@@ -1,0 +1,119 @@
+{% extends "site_base.html" %}
+{% load paginate %}
+{% load sizes %}
+{% block title %} Aktif Makineler {% endblock %}
+{% block contenttitle %} Aktif Makineler {% endblock %}
+{% block bodycontent %}
+<!-- main_container starts here -->
+<div class="fluid">
+    <div class="widget grid12">
+        <div class="widget-header">
+            <div class="widget-title">
+                <i class="fa fa-laptop"></i> Aktif Makineler
+            </div>
+            <div class="widget-controls">
+                <div class="badge msg-badge">Sayı</div>
+            </div>
+        </div> <!-- /widget-header -->
+
+        <div class="widget-content pad20f">
+            <div class="table_row">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+
+                                <th width="8%">HostName</th>
+
+
+                                <th width="12%">IP Adresi</th>
+                                <th width="12%">OS</th>
+                                <th width="12%">Kullanıcı</th>
+                                <th width="12%">Oluşturuldu</th>
+                                <th width="15%">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if per_page %}
+                            {% paginate per_page active_containers_list %}
+                            {% else %}
+                            {% paginate 5 active_containers_list %}
+                            {% endif %}
+
+                            {% for container in active_containers_list %}
+                            <tr>
+
+                                <td>{{ container.hostname }}</td>
+
+                                <td>{{ container.ip_addr }}</td>
+                                <th >{{ 'Linux' }} </th>
+                                <td>
+                                    {% if container.user.all|length == 1 %}
+                                    {% for u in container.user.all %}
+                                    {{ u }}
+                                    {% endfor %}
+                                    {% else %}
+                                    <select>
+                                        <option>--Atanan Kullanıcılar--</option>
+                                        {% for u in container.user.all %}
+                                        <option>{{ u }}</option>                                        {% endfor %}
+                                    </select>
+                                    {% endif %}
+                                </td>
+                                <td>{{ container.created }}</td>
+                                <td class="actions">
+<div class="btn-group">
+                                    <a href="{% url 'docker_box:restart-container' container_id=container.container_id %}"
+                                       class="btn btn-blue restart-this-container"><i class="fa fa-refresh"></i></a>
+                                    <a href="{% url 'docker_box:restart-container' container_id=container.container_id %}"
+                                       class="btn btn-grey restart-this-container"><i class="fa fa-user"></i></a>
+                                    <a href="{% url 'docker_box:restart-container' container_id=container.container_id %}"
+                                       class="btn btn-black restart-this-container"><i class="fa fa-hashtag"></i></a>
+</div>
+
+
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% ifequal active_containers_list|length 0 %}
+                    <div class="marl row text-center">
+                        <h4>Aktif Makine Yok...</h4>
+                    </div>
+                    {% endifequal %}
+
+                    <div class="marl row text-center">
+                        {% show_pages %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- main_container ends here -->
+
+{% endblock %}
+{% block extra_js %}
+<script type="text/javascript">
+
+    $('body').on('click', '.restart-this-container', function (e) {
+        e.preventDefault();
+        $('.loader').show()
+        // console.log($(this))
+        URL = $(this).context.pathname
+        $.get(URL, function (data, status, xhr) {
+            if (data['success'] == 'restarted') {
+                $('.loader').hide()
+                window.location = "{% url 'docker_box:container-list' %}"
+            } else {
+                $('.loader').hide()
+                alert(data['ERROR'])
+                window.location = "{% url 'docker_box:container-list' %}"
+            }
+        });
+    });
+</script>
+
+{% endblock %}
